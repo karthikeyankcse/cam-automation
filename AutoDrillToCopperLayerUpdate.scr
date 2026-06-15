@@ -1,0 +1,33 @@
+setlayer@ 0
+layer_alloff@ 1
+
+Startlayer% = 4 
+Endlayer% = 7 
+
+DrillLayer% = 18
+
+totalLayers% = numlayers!
+TotalLayerList% = totalLayers%
+TotalLayerListUp% = TotalLayerList% - 1
+
+For srcLayer% = Startlayer% - 1 To Endlayer% - 1
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    edit_delete@
+    setsnap@ 1
+    seteditdraw@ 0
+    seteditvia@ 0
+    seteditflash@ 1
+    seteditdrill@ 0
+    seteditmill@ 0
+    edit_multiple@
+    edit_selectall2@ 
+    delete_edits@ 4,1
+
+    setlayer@ DrillLayer% - 1
+    edit_copy@
+    setsnap@ 1
+    edit_selectall2@ 
+    setcoplayer@ srcLayer%,1
+    copy_to_layer@ 
+Next

@@ -1,0 +1,373 @@
+setlayer@ 0
+layer_alloff@ 1
+
+totalLayers% = numlayers!
+TotalLayerList% = totalLayers%
+TotalLayerListUp% = TotalLayerList% - 1
+
+For srcLayer% = 0 To TotalLayerListUp%
+
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+
+    ' read the tool table for this layer (fallback to 1)
+    ToolTable% = Tooltable!
+    If ToolTable% <= 0 Then ToolTable% = 1
+
+    SubTxt1$ = ".GT"
+    SubTxt2$ = ".GB"
+    SubTxt3$ = ".GM"
+    SubTxt4$ = ".GD"
+    SubTxt5$ = ".GG"
+    MainSubTxt$ = ".G"
+
+    pos1% = instr(CreateLyrNameUp$, SubTxt1$)
+    pos2% = instr(CreateLyrNameUp$, SubTxt2$)
+    pos3% = instr(CreateLyrNameUp$, SubTxt3$)
+    pos4% = instr(CreateLyrNameUp$, SubTxt4$)
+    pos5% = instr(CreateLyrNameUp$, SubTxt5$)
+
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+
+    If pos1% = 0 AND pos2% = 0 AND pos3% = 0 AND pos4% = 0 AND pos5% = 0 Then
+        If MainPos% > 0 Then
+            edit_layer@ srcLayer%,2,0,1,0,CreateLyrName$
+            nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+            nc_set_layer_rank@ srcLayer%,0
+            view_LayerFlash@ srcLayer%,1
+            view_LayerDraw@ srcLayer%,1
+            edit_lmapdefaults@
+        End If
+    End If
+
+    If pos3% > 0 Then
+        edit_layer@ srcLayer%,6,6,4,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    If pos4% > 0 Then
+        edit_layer@ srcLayer%,6,6,4,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    If pos5% > 0 Then
+        edit_layer@ srcLayer%,6,6,4,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+Next
+
+For srcLayer% = 0 To TotalLayerListUp%
+
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+
+    ' read the tool table for this layer (fallback to 1)
+    ToolTable% = Tooltable!
+    If ToolTable% <= 0 Then ToolTable% = 1
+
+    MainSubTxt$ = ".GTO"
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+
+    If MainPos% > 0 Then
+        edit_layer@ srcLayer%,13,13,7,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    MainSubTxt1$ = ".GTP"
+    MainPos1% = instr(CreateLyrNameUp$, MainSubTxt1$)
+    If MainPos1% > 0 Then
+        edit_layer@ srcLayer%,8,8,19,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    MainSubTxt2$ = ".GTS"
+    MainPos2% = instr(CreateLyrNameUp$, MainSubTxt2$)
+    If MainPos2% > 0 Then
+        edit_layer@ srcLayer%,3,3,11,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    MainSubTxt3$ = ".GTL"
+    MainPos3% = instr(CreateLyrNameUp$, MainSubTxt3$)
+    If MainPos3% > 0 Then
+        edit_layer@ srcLayer%,2,0,0,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    MainSubTxt4$ = ".GBL"
+    MainPos4% = instr(CreateLyrNameUp$, MainSubTxt4$)
+    If MainPos4% > 0 Then
+        edit_layer@ srcLayer%,2,0,3,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    MainSubTxt5$ = ".GBS"
+    MainPos5% = instr(CreateLyrNameUp$, MainSubTxt5$)
+    If MainPos5% > 0 Then
+        edit_layer@ srcLayer%,3,3,12,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    MainSubTxt6$ = ".GBP"
+    MainPos6% = instr(CreateLyrNameUp$, MainSubTxt6$)
+    If MainPos6% > 0 Then
+        edit_layer@ srcLayer%,8,8,20,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    MainSubTxt7$ = ".GBO"
+    MainPos7% = instr(CreateLyrNameUp$, MainSubTxt7$)
+    If MainPos7% > 0 Then
+        edit_layer@ srcLayer%,13,13,8,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+
+    MainSubTxt8$ = ".TX"
+    MainPos8% = instr(CreateLyrNameUp$, MainSubTxt8$)
+    If MainPos8% > 0 Then
+        edit_layer@ srcLayer%,14,14,21,0,CreateLyrName$
+        nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+        nc_set_layer_rank@ srcLayer%,0
+        view_LayerFlash@ srcLayer%,1
+        view_LayerDraw@ srcLayer%,1
+        edit_lmapdefaults@
+    End If
+Next
+
+totalLayers% = numlayers!
+TotalLayerList% = totalLayers%
+TotalLayerListUp% = TotalLayerList% - 1
+IncVal% = 0
+
+init_layer_reorder@
+
+' Move .GTO first
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+    MainSubTxt$ = ".GTO"
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+    If MainPos% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+Next
+
+' Move .GTP next
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+    MainSubTxt$ = ".GTP"
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+    If MainPos% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+Next
+
+' Move .GTS next
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+    MainSubTxt$ = ".GTS"
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+    If MainPos% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+Next
+
+' Move .GTL next
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+    MainSubTxt$ = ".GTL"
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+    If MainPos% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+Next
+
+' Generic .G (excluding .GT, .GB, .GM, .GD, .GG)
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+
+    SubTxt1$ = ".GT"
+    SubTxt2$ = ".GB"
+    SubTxt3$ = ".GM"
+    SubTxt4$ = ".GD"
+    SubTxt5$ = ".GG"
+    MainSubTxt$ = ".G"
+
+    pos1% = instr(CreateLyrNameUp$, SubTxt1$)
+    pos2% = instr(CreateLyrNameUp$, SubTxt2$)
+    pos3% = instr(CreateLyrNameUp$, SubTxt3$)
+    pos4% = instr(CreateLyrNameUp$, SubTxt4$)
+    pos5% = instr(CreateLyrNameUp$, SubTxt5$)
+
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+
+    If pos1% = 0 AND pos2% = 0 AND pos3% = 0 AND pos4% = 0 AND pos5% = 0 Then
+        If MainPos% > 0 Then
+            change_layer_position@ IncVal%,srcLayer%,IncVal%
+            IncVal% = IncVal% + 1
+        End If
+    End If
+Next
+
+' Move .GBL, .GBS, .GBP, .GBO in order
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+    MainSubTxt$ = ".GBL"
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+    If MainPos% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+Next
+
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+    MainSubTxt$ = ".GBS"
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+    If MainPos% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+Next
+
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+    MainSubTxt$ = ".GBP"
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+    If MainPos% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+Next
+
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+    MainSubTxt$ = ".GBO"
+    MainPos% = instr(CreateLyrNameUp$, MainSubTxt$)
+    If MainPos% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+Next
+
+' Move .GM .GD .GG last among .G variants
+For srcLayer% = 0 To TotalLayerListUp%
+
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    CreateLyrNameUp$ = ucase$(Layername!)
+
+    SubTxt3$ = ".GM"
+    SubTxt4$ = ".GD"
+    SubTxt5$ = ".GG"
+    MainSubTxt$ = ".G"
+
+    pos3% = instr(CreateLyrNameUp$, SubTxt3$)
+    pos4% = instr(CreateLyrNameUp$, SubTxt4$)
+    pos5% = instr(CreateLyrNameUp$, SubTxt5$)
+
+    If pos3% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+
+    If pos4% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+
+    If pos5% > 0 Then
+        change_layer_position@ IncVal%,srcLayer%,IncVal%
+        IncVal% = IncVal% + 1
+    End If
+
+Next
+
+apply_layer_order@
+
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+Next
+
+view_all@
+print "Reorder and Color Update Completed"

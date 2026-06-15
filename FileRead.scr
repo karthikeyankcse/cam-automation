@@ -1,0 +1,136 @@
+
+True%   = 1
+False%  = 0
+
+TxtFile$        = ""
+TxtLine$        = ""
+LineCount%      = 0
+Counter%        = 0
+
+
+gosub GETTXTFILE
+gosub COUNTLINES
+gosub READTXT
+gosub SHOWINFO
+
+MACROEND:
+print_msg "Macro finished."
+delay 500
+end
+
+
+GETTXTFILE:
+
+OpenForm #1, 80, 6, "Layer Reorder", character, okcancel
+AddForm #1, 0, 1, "Select the Input .TXT file for layer reordering", print
+AddForm #1, 0, 3, "Layer File:", GETOPENFILENAME, TxtFile$
+DisplayForm #1
+
+Canceled% = formCancel(1)
+DeleteForm #1
+
+if Canceled% then goto MACROEND
+
+if TxtFile$ = "" then
+    print "Please select a text file before continuing."
+    goto GETTXTFILE
+end if
+
+return
+
+
+COUNTLINES:
+
+Counter% = 0
+open TxtFile$ for input as #1
+
+do
+    input #1, TxtLine$
+    Counter% = Counter% + 1
+loop until eof(1)
+
+close #1
+return
+
+
+READTXT:
+
+print_msg "Reading text file..."
+
+open TxtFile$ for input as #1
+
+IncVal% = 0
+
+init_layer_reorder@
+
+for LineCount% = 1 to Counter%
+    line input #1, TxtLine$
+    'print TxtLine$
+
+    setlayer@ 0
+    layer_alloff@ 1
+
+    totalLayers% = numlayers!
+    TotalLayerList% = totalLayers%
+    TotalLayerListUp% = TotalLayerList% - 1
+
+    For srcLayer% = 0 To TotalLayerListUp%
+        setlayer@ srcLayer%
+        layer_alloff@ 1
+        CreateLyrName$ = Layername!
+        ToolTable% = Tooltable!
+        If ucase$(CreateLyrName$) = ucase$(TxtLine$) Then
+
+            If LineCount% = 1 Then
+                edit_layer@ srcLayer%,2,0,0,0,CreateLyrName$
+                nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+                nc_set_layer_rank@ srcLayer%,0
+                view_LayerFlash@ srcLayer%,1
+                view_LayerDraw@ srcLayer%,1
+                edit_lmapdefaults@
+            End If
+
+            If LineCount% = Counter% Then
+                edit_layer@ srcLayer%,2,0,3,0,CreateLyrName$
+                nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+                nc_set_layer_rank@ srcLayer%,0
+                view_LayerFlash@ srcLayer%,1
+                view_LayerDraw@ srcLayer%,1
+                edit_lmapdefaults@
+            End If
+
+            If LineCount% <> Counter% And LineCount% <> 1 Then
+                edit_layer@ srcLayer%,2,0,1,0,CreateLyrName$
+                nc_assign_tool_table_to_layer@ srcLayer%,ToolTable%
+                nc_set_layer_rank@ srcLayer%,0
+                view_LayerFlash@ srcLayer%,1
+                view_LayerDraw@ srcLayer%,1
+                edit_lmapdefaults@
+            End If
+
+            change_layer_position@ IncVal%,srcLayer%,IncVal%
+            IncVal% = IncVal% + 1
+
+        End If
+    Next
+
+next
+
+apply_layer_order@
+
+close #1
+close_msg
+return
+
+
+SHOWINFO:
+
+OpenForm #2, 80, 5, "TXT Read Complete", character, ok
+AddForm #2, 0, 1, "File read successfully:", print
+AddForm #2, 0, 2, TxtFile$, print
+AddForm #2, 0, 3, "Total Layers Ordered: " + str$(IncVal%), print
+DisplayForm #2
+
+Dummy% = formOk(2)
+DeleteForm #2
+return

@@ -1,0 +1,18 @@
+util_drc@
+drc_seterrorfile@ "d:\karthi keyan.k\cam\panelling\test dfm\errors.drc"
+drc_Set_Trk2Trk_Test@ 0,1
+drc_Set_Trk2Pad_Test@ 0,1
+drc_Set_Pad2Pad_Test@ 0,1
+drc_Set_MinTrk_Test@ 0,1
+drc_Set_MinPad_Test@ 0,1
+drc_Set_Trk2Trk_Val@ 0,15
+drc_Set_Trk2Pad_Val@ 0,15
+drc_Set_Pad2Pad_Val@ 0,15
+drc_Set_MinTrk_Val@ 0,15
+drc_Set_MinPad_Val@ 0,15
+drc_Add_Drc_Lyr_To_Pass@ 0,4,-1,0
+drc_Add_Drc_Lyr_To_Pass@ 0,5,-1,0
+axy@ 56300.0000,56300.0000
+axy@ -56300.0000,-56300.0000
+drc_NetlistExtract@ 
+drc_Run_Pass@ 0

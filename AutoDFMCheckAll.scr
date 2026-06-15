@@ -1,0 +1,29 @@
+setlayer@ 0
+layer_alloff@ 1
+
+totalLayers% = numlayers!
+TotalLayerList% = totalLayers%
+TotalLayerListUp% = TotalLayerList% - 1
+
+StartLyr% = 100
+EndLyr% = 100
+
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    LyrType% = Layertype!
+    If LyrType% = 0 Then
+        StartLyr% = srcLayer% 
+    End If
+
+    If LyrType% = 3 Then
+        EndLyr% = srcLayer% 
+    End If
+Next
+
+If StartLyr% <> 100 AND EndLyr% <> 100 Then  
+    print StartLyr%
+    print EndLyr%
+Else
+    print "Error : Top Layer or Bottom Layer Not Found"
+End If

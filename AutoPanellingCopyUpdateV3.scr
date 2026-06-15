@@ -1,0 +1,165 @@
+view_toolbar@
+view_statbar@
+view_lyrbar@
+view_SuppressGrphcs@ 1
+setgrid@ 2,0.1,0.1
+
+setlayer@ 0
+layer_alloff@ 1
+
+topBoxX# = 1977.7
+topBoxY# = 0
+bottomBoxX# = 2400.0
+bottomBoxY# = 0
+Copies% = 9
+Airgap% = 100
+XSides% = 2
+DrillLyrs% = 1
+
+OpenForm #1, 70, 10, "Bounding Box Coordinates", character, okcancel
+
+AddForm #1, 3, 0, "Top Box X Point                     -->", input, topBoxX#, -999999 to 999999
+AddForm #1, 3, 1, "Top Box Y Point                     -->", input, topBoxY#, -999999 to 999999
+AddForm #1, 3, 2, "Bot Box X Point                     -->", input, bottomBoxX#, -999999 to 999999
+AddForm #1, 3, 3, "Bot Box Y Point                     -->", input, bottomBoxY#, -999999 to 999999
+AddForm #1, 3, 4, "Total Num Of Copies                 -->", input, Copies%, 0 to 999999
+AddForm #1, 3, 5, "Total Num Of Drill Layers           -->", input, DrillLyrs%, 0 to 999999
+AddForm #1, 3, 6, "Brd to Brd Airgap Distance          -->", input, Airgap%, 0 to 999999
+AddForm #1, 3, 7, "Total Num Of Boards On X Sides      -->", input, XSides%, 0 to 999999
+
+DisplayForm #1
+
+If formcancel(1) Then
+    DeleteForm #1
+    goto EndScript
+End If
+
+For Z% = 1 To 100
+    view_zoomin@
+    axy@ 0.00,0.00
+    end@
+Next
+
+AddValM# = -15
+AddValP# = 15
+If bottomBoxX# < topBoxX# Then
+    minX# = bottomBoxX# + AddValM#
+    maxX# = topBoxX# + AddValP
+Else
+    minX# = topBoxX# + AddValM#
+    maxX# = bottomBoxX# + AddValP#
+End If
+
+If bottomBoxY# < topBoxY# Then
+    minY# = bottomBoxY# + AddValM#
+    maxY# = topBoxY# + AddValP#
+Else
+    minY# = topBoxY# + AddValM#
+    maxY# = bottomBoxY# + AddValP#
+End If
+
+totalLayers% = numlayers!
+TotalLayerList% = totalLayers% 
+
+BoardWidth# = maxX# - minX#
+BoardHeight# = maxY# - minY#
+Airgap% = Airgap% - 30
+
+TotalGrpLyr% = TotalLayerList% - DrillLyrs%
+
+For srcLayer% = 0 To TotalGrpLyr% - 1
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    PassCopies# = BoardWidth# 
+    PassCopiesY# = BoardHeight# 
+    XSidesInc% = XSides% 
+    YPass# = 0.0000
+    newLayer% = TotalLayerList% + srcLayer%
+    edit_layer@ newLayer%, 0, 32, 4, 0, CreateLyrName$
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    edit_copy@
+    setsnap@ 1
+    edit_group@
+    axy@ minX#, minY#
+    axy@ maxX#, maxY#
+    back@
+    setsnap@ 0
+    setcoplayer@ newLayer%, 1
+    copy_to_layer@
+    setlayer@ newLayer%
+    layer_alloff@ 1
+    For CopiesLoop% = 1 To Copies%
+        edit_copy@
+        setsnap@ 1
+        edit_group@
+        axy@ minX#, minY#
+        axy@ maxX#, maxY#
+        back@
+        If CopiesLoop% = XSidesInc% Then
+            axy@ 0.0000,0.0000
+            axy@ 0.0000,-PassCopiesY# - Airgap%
+            PassCopies# = PassCopies# + BoardWidth# + Airgap%
+            XSidesInc% = XSidesInc% + XSides%
+            PassCopies# = BoardWidth# 
+            YPass# = -PassCopiesY# - Airgap%
+            PassCopiesY# = PassCopiesY# + BoardHeight# + Airgap%
+        Else 
+            axy@ 0.0000,0.0000
+            axy@ PassCopies# + Airgap%,YPass#
+            PassCopies# = PassCopies# + BoardWidth# + Airgap%
+        End If
+    Next
+Next
+
+
+For DrillI% = 1 To DrillLyrs%
+    PassCopies# = BoardWidth# 
+    PassCopiesY# = BoardHeight# 
+    XSidesInc% = XSides% 
+    YPass# = 0.0000
+    DrillLyrMain% = TotalLayerList% - DrillI%
+    For CopiesLoop% = 1 To Copies%
+        setlayer@ DrillLyrMain%
+        layer_alloff@ 1
+        edit_copy@
+        setsnap@ 1
+        edit_group@
+        axy@ minX#, minY#
+        axy@ maxX#, maxY#
+        back@
+        If CopiesLoop% = XSidesInc% Then
+            axy@ 0.0000,0.0000
+            axy@ 0.0000,PassCopiesY# + Airgap%
+            PassCopies# = PassCopies# + BoardWidth# + Airgap%
+            XSidesInc% = XSidesInc% + XSides%
+
+            PassCopies# = BoardWidth# 
+            YPass# = PassCopiesY# + Airgap%
+            PassCopiesY# = PassCopiesY# + BoardHeight# + Airgap%
+        Else 
+            axy@ 0.0000,0.0000
+            axy@ PassCopies# + Airgap%,YPass#
+            PassCopies# = PassCopies# + BoardWidth# + Airgap%
+        End If
+    Next
+Next
+
+For l% = 0 To TotalGrpLyr% - 1
+    edit_removelyr@ l%
+Next
+
+init_layer_reorder@ 
+For RenameLayer% = 0 To TotalGrpLyr%
+    UpRenameLayer% = TotalLayerList% + RenameLayer%
+    change_layer_position@ RenameLayer%,UpRenameLayer%,RenameLayer%
+Next
+apply_layer_order@
+
+view_all@
+print "Copy Panelling Has Been Completed"
+
+DeleteForm #1
+
+EndScript:

@@ -1,0 +1,63 @@
+setlayer@ 0
+layer_alloff@ 1
+
+totalLayers% = numlayers!
+TotalLayerList% = totalLayers% 
+TotalLayerListUp% = TotalLayerList% - 1
+
+SingleLayerList% = TotalLayerList% / 2
+IncLayerList% = TotalLayerList
+
+init_layer_reorder@ 
+For srcLayer% = 0 To SingleLayerList% - 1
+    setlayer@ srcLayer%
+    layer_alloff@ 1
+    CreateLyrName$ = Layername!
+    MainSubTxt8$ = ".TX"
+    MainPos8% = instr(CreateLyrName$, MainSubTxt8$)
+    If MainPos8% > 0 Then
+        edit_layer@ srcLayer%, 2, 2, 21, 0, CreateLyrName$
+        change_layer_position@ IncLayerList%,srcLayer%,IncLayerList%
+        IncLayerList% = IncLayerList% + 1
+
+        UpsrcLayer% = srcLayer% + SingleLayerList%
+        setlayer@ UpsrcLayer%
+        layer_alloff@ 1
+        CreateLyrNameUp$ = Layername!
+        edit_layer@ UpsrcLayer%, 0, 0, 21, 0, CreateLyrNameUp$
+        change_layer_position@ IncLayerList%,UpsrcLayer%,IncLayerList%
+        IncLayerList% = IncLayerList% + 1
+
+    Else
+        edit_layer@ srcLayer%, 2, 2, 4, 0, CreateLyrName$
+        change_layer_position@ IncLayerList%,srcLayer%,IncLayerList%
+        IncLayerList% = IncLayerList% + 1
+
+        UpsrcLayer% = srcLayer% + SingleLayerList%
+        setlayer@ UpsrcLayer%
+        layer_alloff@ 1
+        CreateLyrNameUp$ = Layername!
+        edit_layer@ UpsrcLayer%, 0, 0, 4, 0, CreateLyrNameUp$
+        change_layer_position@ IncLayerList%,UpsrcLayer%,IncLayerList%
+        IncLayerList% = IncLayerList% + 1
+
+    End If
+
+Next
+
+apply_layer_order@ 
+
+
+init_layer_reorder@ 
+For P% = 0 To TotalLayerList% - 1
+    UpRenameLyr% = TotalLayerList% + P%
+    change_layer_position@ P%,UpRenameLyr%,P%
+Next
+apply_layer_order@ 
+
+
+For srcLayer% = 0 To TotalLayerListUp%
+    setlayer@ srcLayer%
+Next
+view_all@
+print "Gerber Compare has been Completed"
